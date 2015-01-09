@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Built-By: m98958
+Created-By: Apache Maven
+Build-Jdk: 1.8.0_25
+Main-Class: my.path.SimpleServer
+
