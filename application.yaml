@@ -1,0 +1,50 @@
+# Example to show how we can work with meta-data about the application
+#
+# Warning: Please use an editor with YAML syntax higlighting to view this. 
+#          Sublime would be a great choice. :)
+#
+# This is close to, but not identical to what we do in node-manager.
+#
+# NB: This example so far is based on beeing "inside" this project.
+#     This means, it is the only "component to be deployed", ideally
+#     we usually raise the abstraction one extra level.
+# 
+# Large YAML files can be hard to work with and validate. Kwalify helps,
+# but it is worth considering using JSON too. Code (at least in Python),
+# would be pretty much identical though.
+#
+application:
+	# For our case: Lets say this is results in using our own java-jdk8 base image
+	# with some extra code to handle stuff the way we want. Ex: logging, backups,
+	# other information. This means that for the general case you don't write
+	# your own Docerkfile, your code gets injected into a standard container
+	# automatically. 
+	#
+	#There are two options on how to do this:
+	# - On starting up
+	# - Building an application-specific container image on CI
+	#
+	# Both guarantees identical runtimes, if versioning and releasing is used
+	# properly.
+	#
+	type: java-jdk8-1.1
+	constraints:
+		# For java (ie. specific for type above) this results in JAVA_OPTS env var
+		# If the type above is implemented on Docker it also results in constraints
+		# on the running container.
+		memory:
+			max: 4g
+			min: 1g
+		# Options really only relevant to Java runtime
+		java:
+			gc: 1g
+			other_opts: "-cp some-class-path"
+	resources:
+		- resource:
+			# Results in env-vars: my-database_user, ..._password, ..._sid, ..._port
+			name: my-database
+			type: oracle-11g-1.0
+		- resource:
+			# Results in env-vars: my-web-port
+			name: my-web-port
+			type: http-port
